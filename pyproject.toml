@@ -87,6 +87,9 @@ ignore = [
 [tool.ruff.format]
 docstring-code-format = true
 
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = ["S101"]
+
 # https://mypy.readthedocs.io/en/latest/config_file.html
 [tool.mypy]
 ignore_missing_imports = true
@@ -107,4 +110,19 @@ enable_error_code = [
   "mutable-override",
   "unimported-reveal",
   "deprecated",
+]
+
+# http://doc.pytest.org/en/latest/customize.html
+[tool.pytest.ini_options]
+xfail_strict = true
+filterwarnings = ["error"]
+
+addopts = [
+  "--strict-config",
+  "--strict-markers",
+  "--doctest-modules",
+    # Output:
+  "--tb=short",
+  # Ignores:
+  "--ignore=docs",
 ]
