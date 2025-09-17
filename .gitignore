@@ -1,0 +1,57 @@
+# General
+*.DS_Store
+.AppleDouble
+.LSOverride
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+
+.idea
+
+# IntelliJ
+/out/
+
+# pyenv
+.python-version
+
+# Artifacts:
+.gitlab/.svn/
+artifacts/
+
+# pytest and hypothesis
+.pytest_cache/
+.hypothesis/
+
+# ruff:
+.ruff_cache/
+
+# import-linter:
+.import_linter_cache/
+
+# safety:
+.safety/
