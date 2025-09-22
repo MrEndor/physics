@@ -1,0 +1,192 @@
+\begin{center}
+    \subsection{Модель с вязким трением ($F \sim v$)}
+\end{center}
+    
+Сила сопротивления пропорциональна скорости:
+\[
+\vec{F}_{\text{сопр}} = -k\vec{v}
+\]
+где $k > 0$ -- коэффициент сопротивления.
+
+Второй закон Ньютона:
+\[
+m\dfrac{d^2\vec{r}}{dt^2} = m\vec{g} - k\vec{v}
+\]
+или в проекциях:
+\[
+\begin{cases}
+m\dfrac{d^2x}{dt^2} = -k\dfrac{dx}{dt} \\[1em]
+m\dfrac{d^2y}{dt^2} = -mg - k\dfrac{dy}{dt}
+\end{cases}
+\]
+
+Введя обозначения $\gamma = \dfrac{k}{m}$ --- коэффициент затухания, получаем:
+\[
+\begin{cases}
+\dfrac{d^2x}{dt^2} + \gamma \dfrac{dx}{dt} = 0 \\[1em]
+\dfrac{d^2y}{dt^2} + \gamma \dfrac{dy}{dt} = -g
+\end{cases}
+\]
+
+\Solution Решаем систему дифференциальных уравнений.
+
+\textbf{Горизонтальное движение:}
+\[
+\dfrac{d^2x}{dt^2} + \gamma \dfrac{dx}{dt} = 0
+\]
+
+Введем обозначение для скорости: $v_x = \dfrac{dx}{dt}$. Тогда уравнение принимает вид:
+\[
+\dfrac{dv_x}{dt} + \gamma v_x = 0
+\]
+
+Разделяем переменные и интегрируем от 0 до $t$:
+\[
+\int_{v_0 \cos\alpha}^{v_x(t)} \dfrac{dv_x}{v_x} = -\gamma \int_0^t dt
+\]
+\[
+\ln\left(\dfrac{v_x}{v_0 \cos\alpha}\right) = -\gamma t
+\]
+\[
+v_x(t) = v_0 \cos\alpha \cdot e^{-\gamma t}
+\]
+
+Интегрируем для нахождения координаты $x$:
+\[
+\int_0^{x(t)} dx = \int_0^t v_0 \cos\alpha \cdot e^{-\gamma t} dt
+\]
+\[
+x(t) = v_0 \cos\alpha \left[-\dfrac{e^{-\gamma t}}{\gamma}\right]_0^t = \dfrac{v_0 \cos\alpha}{\gamma}(1 - e^{-\gamma t})
+\]
+
+\vspace{0.5cm}
+\textbf{Вертикальное движение:}
+\[
+\dfrac{d^2y}{dt^2} + \gamma \dfrac{dy}{dt} = -g
+\]
+
+Введем обозначение для скорости: $v_y = \dfrac{dy}{dt}$. Тогда уравнение принимает вид:
+\[
+\dfrac{dv_y}{dt} + \gamma v_y = -g
+\]
+
+Это линейное неоднородное уравнение первого порядка. Решаем методом вариации постоянной.
+
+Сначала находим общее решение однородного уравнения:
+\[
+\dfrac{dv_y}{dt} + \gamma v_y = 0
+\]
+Разделяем переменные:
+\[
+\int \dfrac{dv_y}{v_y} = -\gamma \int dt
+\]
+\[
+\ln|v_y| = -\gamma t + C
+\]
+\[
+v_y^{\text{одн}} = C e^{-\gamma t}
+\]
+
+Теперь ищем решение неоднородного уравнения в виде:
+\[
+v_y(t) = C(t) e^{-\gamma t}
+\]
+
+Подставляем в исходное уравнение:
+\[
+\dfrac{d}{dt}\left[C(t) e^{-\gamma t}\right] + \gamma C(t) e^{-\gamma t} = -g
+\]
+\[
+C'(t) e^{-\gamma t} - \gamma C(t) e^{-\gamma t} + \gamma C(t) e^{-\gamma t} = -g
+\]
+\[
+C'(t) e^{-\gamma t} = -g
+\]
+\[
+C'(t) = -g e^{\gamma t}
+\]
+
+Интегрируем:
+\[
+C(t) = -g \int e^{\gamma t} dt = -\dfrac{g}{\gamma} e^{\gamma t} + A
+\]
+
+Подставляем обратно:
+\[
+v_y(t) = \left(-\dfrac{g}{\gamma} e^{\gamma t} + A\right) e^{-\gamma t} = -\dfrac{g}{\gamma} + A e^{-\gamma t}
+\]
+
+Из начального условия $v_y(0) = v_0 \sin\alpha$:
+\[
+-\dfrac{g}{\gamma} + A = v_0 \sin\alpha \Rightarrow A = v_0 \sin\alpha + \dfrac{g}{\gamma}
+\]
+
+Таким образом:
+\[
+v_y(t) = \left(v_0 \sin\alpha + \dfrac{g}{\gamma}\right)e^{-\gamma t} - \dfrac{g}{\gamma}
+\]
+
+Интегрируем для нахождения координаты $y$:
+\[
+\int_0^y dy = \int_0^t \left[\left(v_0 \sin\alpha + \dfrac{g}{\gamma}\right)e^{-\gamma t} - \dfrac{g}{\gamma}\right] dt
+\]
+\[
+y(t) = \left(v_0 \sin\alpha + \dfrac{g}{\gamma}\right)\left[-\dfrac{1}{\gamma}e^{-\gamma t}\right]_0^t - \dfrac{g}{\gamma}t
+\]
+\[
+y(t) = -\dfrac{1}{\gamma}\left(v_0 \sin\alpha + \dfrac{g}{\gamma}\right)(e^{-\gamma t} - 1) - \dfrac{g}{\gamma}t
+\]
+\[
+y(t) = \dfrac{1}{\gamma}\left(v_0 \sin\alpha + \dfrac{g}{\gamma}\right)(1 - e^{-\gamma t}) - \dfrac{g}{\gamma}t
+\]
+
+\vspace{0.5cm}
+\textbf{Вывод уравнения траектории $\bm{y(x)}$:}
+
+Из уравнения для горизонтальной координаты:
+\[
+x(t) = \dfrac{v_0 \cos\alpha}{\gamma}(1 - e^{-\gamma t})
+\]
+Выразим время через координату $x$:
+\[
+1 - e^{-\gamma t} = \dfrac{\gamma x}{v_0 \cos\alpha}
+\]
+\[
+t = -\dfrac{1}{\gamma} \ln\left(1 - \dfrac{\gamma x}{v_0 \cos\alpha}\right)
+\]
+
+Теперь подставим эти выражения в уравнение для вертикальной координаты:
+\[
+y(t) = \dfrac{1}{\gamma}\left(v_0 \sin\alpha + \dfrac{g}{\gamma}\right)(1 - e^{-\gamma t}) - \dfrac{g}{\gamma}t
+\]
+
+Получаем:
+\[
+y(x) = \dfrac{1}{\gamma}\left(v_0 \sin\alpha + \dfrac{g}{\gamma}\right)\cdot \left(\dfrac{\gamma x}{v_0 \cos\alpha}\right) + \dfrac{g}{\gamma^2} \ln\left(1 - \dfrac{\gamma x}{v_0 \cos\alpha}\right)
+\]
+
+Упрощаем:
+\[
+y(x) = x \tan\alpha + \dfrac{g x}{\gamma v_0 \cos\alpha} + \dfrac{g}{\gamma^2} \ln\left(1 - \dfrac{\gamma x}{v_0 \cos\alpha}\right)
+\]
+
+Это и есть уравнение траектории для модели с вязким трением.
+
+\textbf{Проверка предела при $\bm{\gamma \to 0}$:}
+Используем разложение логарифма в ряд Тейлора:
+\[
+\ln(1 - u) = -u - \dfrac{u^2}{2} - \dfrac{u^3}{3} - \cdots, \quad \text{где } u = \dfrac{\gamma x}{v_0 \cos\alpha}
+\]
+
+Тогда:
+\[
+y(x) = x \tan\alpha + \dfrac{g x}{\gamma v_0 \cos\alpha} + \dfrac{g}{\gamma^2} \left(-\dfrac{\gamma x}{v_0 \cos\alpha} - \dfrac{\gamma^2 x^2}{2v_0^2 \cos^2\alpha} + o(\gamma^3)\right)
+\]
+\[
+= x \tan\alpha + \dfrac{g x}{\gamma v_0 \cos\alpha} - \dfrac{g x}{\gamma v_0 \cos\alpha} - \dfrac{g x^2}{2v_0^2 \cos^2\alpha} + o(\gamma)
+\]
+\[
+= x \tan\alpha - \dfrac{g x^2}{2v_0^2 \cos^2\alpha} + o(\gamma) \xrightarrow{\gamma \to 0} x \tan\alpha - \dfrac{g x^2}{2v_0^2 \cos^2\alpha}
+\]
+
+Что совпадает с уравнением траектории для идеального случая.

@@ -1,0 +1,105 @@
+\begin{center}
+    \subsection{Идеальный случай (без сопротивления воздуха)}
+\end{center}
+    
+В отсутствие сопротивления воздуха \textbf{второй закон Ньютона} имеет вид:
+\[
+m\dfrac{d^2\vec{r}}{dt^2} = m\vec{g}
+\]
+или в проекциях на оси:
+\[
+\begin{cases}
+\ddfrac{d^2x}{dt^2} = 0 \\[1em]
+\ddfrac{d^2y}{dt^2} = -g
+\end{cases}
+\]
+
+\Solution Интегрируем систему дифференциальных уравнений.
+
+\textbf{Горизонтальное движение:}
+\[
+\ddfrac{d^2x}{dt^2} = 0
+\]
+Интегрируем первый раз от 0 до $t$:
+\[
+\int_0^t \dfrac{d^2x}{dt^2}  dt = \int_0^t 0  dt
+\]
+\[
+\left.\dfrac{dx}{dt}\right|_0^t = 0 \quad \Rightarrow \quad \dfrac{dx}{dt}(t) - \dfrac{dx}{dt}(0) = 0
+\]
+Из начального условия $\dfrac{dx}{dt}(0) = v_0 \cos\alpha$ находим:
+\[
+\dfrac{dx}{dt}(t) = v_0 \cos\alpha
+\]
+
+Интегрируем второй раз от 0 до $t$:
+\[
+\int_0^t \dfrac{dx}{dt}  dt = \int_0^t v_0 \cos\alpha  dt
+\]
+\[
+x(t) - x(0) = v_0 \cos\alpha \cdot t
+\]
+Из начального условия $x(0) = 0$ находим:
+\[
+x(t) = v_0 \cos\alpha \cdot t
+\]
+
+\vspace{0.5cm}
+\textbf{Вертикальное движение:}
+\[
+\dfrac{d^2y}{dt^2} = -g
+\]
+Интегрируем первый раз от 0 до $t$:
+\[
+\int_0^t \dfrac{d^2y}{dt^2}  dt = \int_0^t -g  dt
+\]
+\[
+\left.\dfrac{dy}{dt}\right|_0^t = -gt \Rightarrow \dfrac{dy}{dt}(t) - \dfrac{dy}{dt}(0) = -gt
+\]
+Из начального условия $\dfrac{dy}{dt}(0) = v_0 \sin\alpha$ находим:
+\[
+\dfrac{dy}{dt}(t) = v_0 \sin\alpha - gt
+\]
+
+Интегрируем второй раз от 0 до $t$:
+\[
+\int_0^t \dfrac{dy}{dt}  dt = \int_0^t (v_0 \sin\alpha - gt)  dt
+\]
+\[
+y(t) - y(0) = v_0 \sin\alpha t - \dfrac{gt^2}{2}
+\]
+Из начального условия $y(0) = 0$ находим:
+\[
+y(t) = v_0 \sin\alpha t - \dfrac{gt^2}{2}
+\]
+
+\vspace{0.5cm}
+\textbf{Уравнение траектории} $\bm{y(x):}$
+Исключая время из уравнений движения, получаем уравнение траектории. Из $x(t)$ выражаем время:
+\[
+t = \dfrac{x}{v_0 \cos\alpha}
+\]
+Подставляем в уравнение для $y(t)$:
+\[
+y(x) = v_0 \sin\alpha \cdot \left(\dfrac{x}{v_0 \cos\alpha}\right) - \dfrac{g}{2}\left(\dfrac{x}{v_0 \cos\alpha}\right)^2 = x \tg\alpha - \dfrac{gx^2}{2v_0^2 \cos^2\alpha}
+\]
+
+\textbf{Дальность полёта} $\bm{L}$ находим из условия $y(L) = 0$:
+\[
+L \tan\alpha - \dfrac{gL^2}{2v_0^2 \cos^2\alpha} = 0
+\]
+\[
+L\left(\tan\alpha - \dfrac{gL}{2v_0^2 \cos^2\alpha}\right) = 0
+\]
+Отличное от нуля решение:
+\[
+\tan\alpha = \dfrac{gL}{2v_0^2 \cos^2\alpha} \Rightarrow L = \dfrac{2v_0^2 \cos^2\alpha \tan\alpha}{g} = \dfrac{2v_0^2 \cos\alpha \sin\alpha}{g} = \dfrac{v_0^2 \sin 2\alpha}{g}
+\]
+
+\textbf{Максимальную высоту} $\bm{H}$ находим из условия $\dfrac{dy}{dt}(t_H) = 0$:
+\[
+v_0 \sin\alpha - gt_H = 0 \Rightarrow t_H = \dfrac{v_0 \sin\alpha}{g}
+\]
+Подставляем в уравнение для $y(t)$:
+\[
+H = v_0 \sin\alpha \cdot \dfrac{v_0 \sin\alpha}{g} - \dfrac{g}{2}\left(\dfrac{v_0 \sin\alpha}{g}\right)^2 = \dfrac{v_0^2 \sin^2\alpha}{g} - \dfrac{v_0^2 \sin^2\alpha}{2g} = \dfrac{v_0^2 \sin^2\alpha}{2g}
