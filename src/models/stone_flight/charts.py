@@ -2,7 +2,7 @@ import altair as alt
 import numpy as np
 import pandas as pd
 
-from models.stone_flight.config import DRAG_MODEL_COLORS, DragModel
+from src.models.stone_flight.config import DRAG_MODEL_COLORS, DragModel
 
 
 def create_trajectory_chart(

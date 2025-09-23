@@ -1,16 +1,16 @@
 import numpy as np
 import streamlit as st
 
-from models.stone_flight.charts import (
+from src.models.stone_flight.charts import (
     create_acceleration_chart,
     create_metrics_bar_chart,
     create_trajectory_chart,
     create_velocity_chart,
 )
-from models.stone_flight.config import DragModel
-from models.stone_flight.objects import FlightParameters, StoneFlightModel
-from models.stone_flight.sidebar import create_stone_flight_sidebar
-from models.stone_flight.utils import (
+from src.models.stone_flight.config import DragModel
+from src.models.stone_flight.objects import FlightParameters, StoneFlightModel
+from src.models.stone_flight.sidebar import create_stone_flight_sidebar
+from src.models.stone_flight.utils import (
     calculate_flight_metrics,
     create_flight_dataframe,
 )

@@ -28,7 +28,7 @@ fix = true
 line-length = 80
 respect-gitignore = true
 
-src = ["src", "tests"]
+src = ["src"]
 
 target-version = "py312"
 
@@ -94,7 +94,11 @@ ignore = [
 docstring-code-format = true
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*.py" = ["S101"]
+"tests/*.py" = [
+  "S101",
+  "SLF001",
+  "PLR2004",
+]
 
 # https://mypy.readthedocs.io/en/latest/config_file.html
 [tool.mypy]
