@@ -1,6 +1,7 @@
 import numpy as np
-from src.models.stone_flight.config import DragModel
-from src.models.stone_flight.objects import FlightParameters, StoneFlightModel
+
+from models.stone_flight.config import DragModel
+from models.stone_flight.objects import FlightParameters, StoneFlightModel
 
 
 def test_trajectory_shape_and_properties(

@@ -1,5 +1,6 @@
 import pytest
-from src.models.stone_flight.objects import FlightParameters, StoneFlightModel
+
+from models.stone_flight.objects import FlightParameters, StoneFlightModel
 
 
 @pytest.fixture

@@ -127,6 +127,8 @@ enable_error_code = [
 xfail_strict = true
 filterwarnings = ["error"]
 
+pythonpath = "src"
+
 addopts = [
   "--strict-config",
   "--strict-markers",

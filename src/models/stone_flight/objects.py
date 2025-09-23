@@ -5,7 +5,7 @@ import numpy as np
 import streamlit as st
 from scipy import integrate
 
-from src.models.stone_flight.config import PHYSICAL_CONSTANTS, DragModel
+from models.stone_flight.config import PHYSICAL_CONSTANTS, DragModel
 
 
 @dataclass

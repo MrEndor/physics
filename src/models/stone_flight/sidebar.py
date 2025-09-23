@@ -1,6 +1,6 @@
 import streamlit as st
 
-from src.models.stone_flight.objects import FlightParameters
+from models.stone_flight.objects import FlightParameters
 
 
 def create_stone_flight_sidebar() -> FlightParameters:
