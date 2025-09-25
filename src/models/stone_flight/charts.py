@@ -96,7 +96,7 @@ def create_velocity_chart(
         })
         data_frames.append(df)
 
-    df_combined = pd.concat(data_frames, ignore_index=True)
+    df_combined = pd.concat(data_frames) if data_frames else pd.DataFrame()
 
     chart: alt.Chart = (
         alt.Chart(df_combined)
@@ -133,7 +133,7 @@ def create_acceleration_chart(
         })
         data_frames.append(df)
 
-    df_combined = pd.concat(data_frames)
+    df_combined = pd.concat(data_frames) if data_frames else pd.DataFrame()
 
     chart: alt.Chart = (
         alt.Chart(df_combined)

@@ -16,7 +16,7 @@ from models.stone_flight.utils import (
 )
 
 
-def init() -> None:
+def page() -> None:
     st.set_page_config(page_title="М1. Полёт камня", layout="wide")
     st.title("М1. Полёт камня")
     st.write(
@@ -109,6 +109,3 @@ def display_dynamics_comparison(
 
     st.altair_chart(velocity_chart, use_container_width=True)
     st.altair_chart(acceleration_chart, use_container_width=True)
-
-
-init()

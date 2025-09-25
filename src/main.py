@@ -1,9 +1,11 @@
 import streamlit
 
+from models.stone_flight import page
+
 
 def main() -> None:
     pages = streamlit.navigation([
-        streamlit.Page("./models/stone_flight/__init__.py", title="M1 проект")
+        streamlit.Page(page, title="M1 проект"),
     ])
 
     pages.run()

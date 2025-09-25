@@ -20,6 +20,16 @@ def calculate_flight_metrics(
 def create_flight_dataframe(
     x: np.ndarray, y: np.ndarray, t: np.ndarray, drag_model: str
 ) -> pd.DataFrame:
+    if len(x) < 2 or len(y) < 2 or len(t) < 2:  # noqa: PLR2004
+        return pd.DataFrame({
+            "time": t,
+            "x": x,
+            "y": y,
+            "velocity": 0,
+            "acceleration": 0,
+            "drag_model": drag_model,
+        })
+
     velocity_x = np.gradient(x, t)
     velocity_y = np.gradient(y, t)
     velocity = np.sqrt(velocity_x**2 + velocity_y**2)
