@@ -5,6 +5,10 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+  "altair>=5.5.0",
+  "numpy>=2.3.3",
+  "pandas>=2.3.2",
+  "scipy>=1.16.2",
   "streamlit>=1.49.1",
 ]
 
@@ -14,6 +18,7 @@ dev = [
   "pre-commit>=4.3.0",
   "pytest>=8.4.2",
   "ruff>=0.13.0",
+  "scipy-stubs>=1.16.2.0",
 ]
 
 # https://docs.astral.sh/ruff/settings/
@@ -23,7 +28,7 @@ fix = true
 line-length = 80
 respect-gitignore = true
 
-src = ["src", "tests"]
+src = ["src"]
 
 target-version = "py312"
 
@@ -82,13 +87,18 @@ ignore = [
   "ISC001", # implicit string concat conflicts with `ruff format`
   "ISC003", # prefer explicit string concat over implicit concat
   "TRY003", # long exception messages from `tryceratops`
+  "RUF001",
 ]
 
 [tool.ruff.format]
 docstring-code-format = true
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*.py" = ["S101"]
+"tests/*.py" = [
+  "S101",
+  "SLF001",
+  "PLR2004",
+]
 
 # https://mypy.readthedocs.io/en/latest/config_file.html
 [tool.mypy]
@@ -116,6 +126,8 @@ enable_error_code = [
 [tool.pytest.ini_options]
 xfail_strict = true
 filterwarnings = ["error"]
+
+pythonpath = "src"
 
 addopts = [
   "--strict-config",
