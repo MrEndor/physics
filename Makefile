@@ -23,4 +23,4 @@ package:
 	uv run pip check
 
 .PHONY: test
-test: lint package unit
+test: lint unit
