@@ -484,6 +484,7 @@ dependencies = [
     { name = "altair" },
     { name = "numpy" },
     { name = "pandas" },
+    { name = "python-dateutil" },
     { name = "scipy" },
     { name = "streamlit" },
 ]
@@ -502,6 +503,7 @@ requires-dist = [
     { name = "altair", specifier = ">=5.5.0" },
     { name = "numpy", specifier = ">=2.3.3" },
     { name = "pandas", specifier = ">=2.3.2" },
+    { name = "python-dateutil", specifier = ">=2.9.0.post0" },
     { name = "scipy", specifier = ">=1.16.2" },
     { name = "streamlit", specifier = ">=1.49.1" },
 ]

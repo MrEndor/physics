@@ -1,0 +1,81 @@
+\begin{center}
+    \section{Численные методы решения}
+\end{center}
+
+\begin{center}
+    \textbf{Численное интегрирование системы ОДУ}
+\end{center}
+
+Для решения систем дифференциальных уравнений, возникающих в модели с силой Гука, используем метод Рунге-Кутты 4-го порядка.
+
+\begin{center}
+    \textbf{Преобразование к системе первого порядка}
+\end{center}
+
+Исходная система уравнений второго порядка:
+\[
+\begin{cases}
+m_1 \ddfrac{d^2\vec{r}_1}{dt^2} = \vec{F}_{12} \\[1em]
+m_2 \ddfrac{d^2\vec{r}_2}{dt^2} = -\vec{F}_{12}
+\end{cases}
+\]
+
+В терминах скоростей:
+\[
+\vec{v}_1 = \dfrac{d\vec{r}_1}{dt}, \quad \vec{v}_2 = \dfrac{d\vec{r}_2}{dt}
+\]
+
+Получаем систему первого порядка:
+\[
+\begin{cases}
+\ddfrac{d\vec{r}_1}{dt} = \vec{v}_1 \\[1em]
+\ddfrac{d\vec{r}_2}{dt} = \vec{v}_2 \\[1em]
+\ddfrac{d\vec{v}_1}{dt} = \dfrac{\vec{F}_{12}}{m_1} \\[1em]
+\ddfrac{d\vec{v}_2}{dt} = -\dfrac{\vec{F}_{12}}{m_2}
+\end{cases}
+\]
+
+\begin{center}
+    \textbf{Алгоритм Рунге-Кутты 4-го порядка}
+\end{center}
+
+Для системы $\dfrac{d\vec{y}}{dt} = \vec{f}(t, \vec{y})$ с начальным условием $\vec{y}(t_0) = \vec{y}_0$:
+
+\begin{enumerate}
+    \item Выбираем шаг интегрирования $\Delta h$
+    \item На каждом шаге вычисляем коэффициенты:
+    \begin{align}
+    \vec{k}_1 &= \Delta h \vec{f}(t_n, \vec{y}_n) \\
+    \vec{k}_2 &= \Delta h \vec{f}(t_n + \Delta h/2, \vec{y}_n + \vec{k}_1/2) \\
+    \vec{k}_3 &= \Delta h \vec{f}(t_n + \Delta h/2, \vec{y}_n + \vec{k}_2/2) \\
+    \vec{k}_4 &= \Delta h \vec{f}(t_n + \Delta h, \vec{y}_n + \vec{k}_3)
+    \end{align}
+    \item Обновляем решение:
+    \[
+    \vec{y}_{n+1} = \vec{y}_n + \dfrac{1}{6}(\vec{k}_1 + 2\vec{k}_2 + 2\vec{k}_3 + \vec{k}_4)
+    \]
+\end{enumerate}
+
+\begin{center}
+    \textbf{Детекция столкновений}
+\end{center}
+
+\textit{Проблема:} При использовании фиксированного шага интегрирования может произойти "проскакивание"  момента столкновения.
+
+\textit{Решение:} Адаптивный алгоритм детекции:
+\begin{enumerate}
+    \item На каждом шаге проверяем условие $|\vec{r}_2 - \vec{r}_1| < 2R$
+    \item При пересечении используем бинпоиск для точного определения момента контакта
+    \item Корректируем временной шаг для точного попадания в момент столкновения
+\end{enumerate}
+
+\begin{center}
+    \textbf{Выбор шага интегрирования}
+\end{center}
+
+Критерии выбора временного шага $\Delta h$:
+\begin{itemize}
+    \item \textbf{Точность:} $\Delta h$ должно быть достаточно малым для обеспечения заданной точности
+\end{itemize}
+
+\newpage
