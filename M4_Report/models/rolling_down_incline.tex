@@ -1,0 +1,152 @@
+\subsection{Скатывание по наклонной плоскости}
+
+Рассмотрим шар, скатывающийся по наклонной плоскости с углом наклона $\theta$ к горизонту.
+
+\textbf{Уравнения движения}
+
+Применяем \textbf{второй закон Ньютона} для поступательного движения центра масс:
+\[
+m\vec{a} = \vec{F}_g + \vec{N} + \vec{F}_{\text{тр}}
+\]
+
+В проекциях на оси (ось $x$ вдоль плоскости вниз, $y$ перпендикулярно плоскости):
+\[
+\begin{cases}
+ma_x = mg\sin\theta - F_{\text{тр}} \\
+ma_y = N - mg\cos\theta = 0
+\end{cases}
+\]
+
+Применяем \textbf{основное уравнение динамики вращательного движения}:
+\[
+I\dfrac{d\omega}{dt} = M
+\]
+
+где $M$ -- момент силы трения относительно центра масс:
+\[
+M = F_{\text{тр}} \cdot R
+\]
+
+Для однородного шара $I = \dfrac{2}{5}mR^2$, следовательно:
+\[
+\dfrac{2}{5}mR^2 \dfrac{d\omega}{dt} = F_{\text{тр}} R
+\]
+\[
+\dfrac{d\omega}{dt} = \dfrac{5F_{\text{тр}}}{2mR}
+\]
+
+\begin{center}
+    \textbf{Качение без проскальзывания}
+\end{center}
+
+При качении без проскальзывания выполняется \textbf{условие связи}:
+\[
+v = \omega R \quad \Rightarrow \quad a = \dfrac{dv}{dt} = R\dfrac{d\omega}{dt}
+\]
+
+Сила трения в этом режиме -- \textbf{сила трения покоя} $F_{\text{тр}} \le \mu N = \mu mg\cos\theta$.
+
+Подставляем условие связи в уравнение вращения:
+\[
+\dfrac{a}{R} = \dfrac{5F_{\text{тр}}}{2mR} \quad \Rightarrow \quad F_{\text{тр}} = \dfrac{2ma}{5}
+\]
+
+Подставляем в уравнение поступательного движения:
+\[
+ma = mg\sin\theta - \dfrac{2ma}{5}
+\]
+\[
+ma + \dfrac{2ma}{5} = mg\sin\theta
+\]
+\[
+\dfrac{7ma}{5} = mg\sin\theta
+\]
+
+Отсюда ускорение центра масс при качении без проскальзывания:
+\[
+\boxed{a = \dfrac{5g\sin\theta}{7}}
+\]
+
+Соответствующая сила трения:
+\[
+F_{\text{тр}} = \dfrac{2ma}{5} = \dfrac{2mg\sin\theta}{7}
+\]
+
+\textbf{Условие качения без проскальзывания:}
+\[
+F_{\text{тр}} \le \mu N \quad \Rightarrow \quad \dfrac{2mg\sin\theta}{7} \le \mu mg\cos\theta
+\]
+\[
+\boxed{\tg\theta \le \dfrac{7\mu}{2}}
+\]
+
+При нарушении этого условия происходит переход в режим проскальзывания.
+
+\begin{center}
+    \textbf{Качение с проскальзыванием}
+\end{center}
+
+При проскальзывании условие связи $v = \omega R$ нарушается, и действует \textbf{сила трения скольжения}:
+\[
+F_{\text{тр}} = \mu N = \mu mg\cos\theta
+\]
+
+Направление силы трения определяется знаком относительной скорости точки контакта:
+\[
+v_{\text{отн}} = v - \omega R
+\]
+\[
+F_{\text{тр}} = -\mu mg\cos\theta \cdot \sign(v_{\text{отн}})
+\]
+
+Система уравнений в режиме проскальзывания:
+\[
+\begin{cases}
+\dfrac{dv}{dt} = g\sin\theta - \mu g\cos\theta \cdot \sign(v - \omega R) \\[1em]
+\dfrac{d\omega}{dt} = \dfrac{5\mu g\cos\theta}{2R} \cdot \sign(v - \omega R)
+\end{cases}
+\]
+
+\textbf{Переход в режим качения без проскальзывания:}
+
+Происходит при выполнении условий:
+\begin{enumerate}
+    \item $|v - \omega R| < \varepsilon$ (малая относительная скорость)
+    \item $\left|\dfrac{2mg\sin\theta}{7}\right| < \mu mg\cos\theta$ (условие для силы трения покоя)
+\end{enumerate}
+
+\begin{center}
+    \textbf{Аналитическое решение для качения без проскальзывания}
+\end{center}
+
+При $a = \text{const} = \dfrac{5g\sin\theta}{7}$ и начальных условиях $v(0) = 0$, $x(0) = 0$:
+\[
+v(t) = \dfrac{5g\sin\theta}{7} t
+\]
+\[
+x(t) = \dfrac{1}{2} \cdot \dfrac{5g\sin\theta}{7} t^2 = \dfrac{5g\sin\theta}{14} t^2
+\]
+
+Угловая скорость:
+\[
+\omega(t) = \dfrac{v(t)}{R} = \dfrac{5g\sin\theta}{7R} t
+\]
+
+\textbf{Анализ энергий:}
+
+Полная механическая энергия при скатывании без проскальзывания:
+\[
+E = E_{\text{кин}} + E_{\text{пот}} = \dfrac{1}{2}mv^2 + \dfrac{1}{2}I\omega^2 + mgh
+\]
+
+При $v = \omega R$ и $I = \dfrac{2}{5}mR^2$:
+\[
+E_{\text{кин}} = \dfrac{1}{2}mv^2 + \dfrac{1}{2} \cdot \dfrac{2}{5}mR^2 \cdot \dfrac{v^2}{R^2} = \dfrac{1}{2}mv^2 + \dfrac{1}{5}mv^2 = \dfrac{7}{10}mv^2
+\]
+
+При скатывании с высоты $h = x\sin\theta$ из состояния покоя:
+\[
+mgh = \dfrac{7}{10}mv^2 \quad \Rightarrow \quad v = \sqrt{\dfrac{10gh}{7}}
+\]
+
+Это на $\sqrt{\dfrac{10}{7}} \approx 1.195$ раза меньше скорости при чистом скольжении ($v = \sqrt{2gh}$), что объясняется затратами энергии на вращение.

@@ -1,0 +1,172 @@
+\section{Численные методы решения}
+
+\begin{center}
+    \textbf{Преобразование к системе первого порядка}
+\end{center}
+
+Исходная система уравнений второго порядка для поступательного и вращательного движения:
+\[
+\begin{cases}
+m\dfrac{d^2\vec{r}}{dt^2} = \vec{F} \\[1em]
+I\dfrac{d\vec{\omega}}{dt} = \vec{M}
+\end{cases}
+\]
+
+Вводим переменные состояния:
+\[
+\vec{v} = \dfrac{d\vec{r}}{dt}
+\]
+
+Получаем систему первого порядка:
+\[
+\begin{cases}
+\dfrac{d\vec{r}}{dt} = \vec{v} \\[1em]
+\dfrac{d\vec{v}}{dt} = \dfrac{\vec{F}}{m} \\[1em]
+\dfrac{d\vec{\omega}}{dt} = \dfrac{\vec{M}}{I}
+\end{cases}
+\]
+
+Для движения в плоскости $xOy$ с вращением вокруг оси $z$ перпендикулярной плоскости:
+\[
+\begin{cases}
+\dfrac{dx}{dt} = v_x \\[1em]
+\dfrac{dy}{dt} = v_y \\[1em]
+\dfrac{dv_x}{dt} = \dfrac{F_x}{m} \\[1em]
+\dfrac{dv_y}{dt} = \dfrac{F_y}{m} \\[1em]
+\dfrac{d\omega_z}{dt} = \dfrac{M_z}{I_z}
+\end{cases}
+\]
+
+\begin{center}
+    \textbf{Вычисление сил и моментов}
+\end{center}
+
+\textbf{1. Для наклонной плоскости (угол $\theta$):}
+
+Компоненты силы тяжести:
+\[
+F_{g,x} = mg\sin\theta, \quad F_{g,y} = -mg\cos\theta
+\]
+
+Нормальная реакция: $N = mg\cos\theta$
+
+Относительная скорость точки контакта:
+\[
+v_{\text{отн}} = v_x - \omega_z R
+\]
+
+Сила трения:
+\[
+F_{\text{тр}} = \begin{cases}
+-\mu N \cdot \sign(v_{\text{отн}}), & \text{если } |v_{\text{отн}}| > \varepsilon \\
+F_{\text{тр,покоя}}, & \text{если } |v_{\text{отн}}| \le \varepsilon
+\end{cases}
+\]
+
+где $\varepsilon$ -- малая пороговая величина для детекции качения без проскальзывания.
+
+При качении без проскальзывания:
+\[
+F_{\text{тр,покоя}} = \dfrac{2mg\sin\theta}{7}
+\]
+
+(ограничена условием $|F_{\text{тр,покоя}}| \le \mu N$)
+
+Момент силы трения:
+\[
+M_z = F_{\text{тр}} \cdot R
+\]
+
+Полные силы:
+\[
+F_x = mg\sin\theta - F_{\text{тр}}, \quad F_y = 0
+\]
+
+\textbf{2. Для горизонтальной плоскости:}
+
+Нормальная реакция: $N = mg$
+
+Относительная скорость точки контакта в векторной форме:
+\[
+\vec{v}_{\text{отн}} = \vec{v} - \vec{\omega} \times \vec{R}
+\]
+
+Для плоского случая ($\omega = \omega_z \vec{e}_z$, $\vec{R} = -R\vec{e}_z$ -- вектор от центра к точке контакта):
+\[
+\vec{v}_{\text{отн}} = (v_x, v_y) - \omega_z \vec{e}_z \times (-R\vec{e}_z) = (v_x, v_y)
+\]
+
+Для учёта вращения в плоскости нужно рассматривать компоненты вращения $\omega_x, \omega_y$. В упрощённой модели:
+\[
+\vec{v}_{\text{отн}} = (v_x - \omega_y R, v_y + \omega_x R)
+\]
+
+Сила трения:
+\[
+\vec{F}_{\text{тр}} = -\mu mg \dfrac{\vec{v}_{\text{отн}}}{|\vec{v}_{\text{отн}}|}
+\]
+
+при $|\vec{v}_{\text{отн}}| > \varepsilon$.
+
+\newpage
+\begin{center}
+    \textbf{Метод Рунге-Кутты 4-го порядка}
+\end{center}
+
+Для системы $\dfrac{d\vec{y}}{dt} = \vec{f}(t, \vec{y})$, где $\vec{y} = (x, y, v_x, v_y, \omega_z)^T$:
+
+\begin{enumerate}
+    \item Выбираем шаг интегрирования $h$
+    \item На каждом шаге вычисляем коэффициенты:
+    \begin{align}
+    \vec{k}_1 &= h \vec{f}(t_n, \vec{y}_n) \\
+    \vec{k}_2 &= h \vec{f}(t_n + h/2, \vec{y}_n + \vec{k}_1/2) \\
+    \vec{k}_3 &= h \vec{f}(t_n + h/2, \vec{y}_n + \vec{k}_2/2) \\
+    \vec{k}_4 &= h \vec{f}(t_n + h, \vec{y}_n + \vec{k}_3)
+    \end{align}
+    \item Обновляем решение:
+    \[
+    \vec{y}_{n+1} = \vec{y}_n + \dfrac{1}{6}(\vec{k}_1 + 2\vec{k}_2 + 2\vec{k}_3 + \vec{k}_4)
+    \]
+    \item Обновляем время: $t_{n+1} = t_n + h$
+\end{enumerate}
+
+\begin{center}
+    \textbf{Алгоритм обработки режимов движения}
+\end{center}
+
+На каждом шаге интегрирования:
+
+\begin{enumerate}
+    \item Вычисляем относительную скорость: $v_{\text{отн}} = v - \omega R$
+
+    \item Проверяем условие проскальзывания:
+    \[
+    \text{если } |v_{\text{отн}}| > \varepsilon \text{, то режим проскальзывания}
+    \]
+
+    \item \textbf{В режиме проскальзывания:}
+    \begin{itemize}
+        \item Сила трения: $F_{\text{тр}} = -\mu N \cdot \sign(v_{\text{отн}})$
+        \item Интегрируем независимо $v$ и $\omega$
+    \end{itemize}
+
+    \item \textbf{В режиме качения без проскальзывания:}
+    \begin{itemize}
+        \item Вычисляем силу трения из условия связи $a = \alpha R$:
+        \[
+        F_{\text{тр}} = \dfrac{2ma}{5}
+        \]
+        где $a$ определяется из уравнения движения с учётом связи
+        \item Проверяем условие $|F_{\text{тр}}| \le \mu N$
+        \item Если нарушается -- переходим в режим проскальзывания
+    \end{itemize}
+
+    \item После интегрирования проверяем переход:
+    \[
+    \text{если } |v_{n+1} - \omega_{n+1} R| < \varepsilon \text{ и } |F_{\text{тр}}| < \mu N
+    \]
+    то переходим в режим качения без проскальзывания
+\end{enumerate}
+
+\newpage
