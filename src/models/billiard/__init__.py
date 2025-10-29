@@ -94,7 +94,7 @@ def page() -> None:
         st.info("Попробуйте изменить параметры моделирования")
 
 
-def display_simulation_results(  # noqa: PLR0913, PLR0917
+def display_simulation_results(
     times: np.ndarray,
     x1: np.ndarray,
     y1: np.ndarray,

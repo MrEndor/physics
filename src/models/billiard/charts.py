@@ -20,7 +20,7 @@ class TrajectoryData:
     method: CollisionMethod
 
 
-def create_billiard_trajectory_chart(  # noqa: PLR0917,PLR0913
+def create_billiard_trajectory_chart(
     times: np.ndarray,
     x1: np.ndarray,
     y1: np.ndarray,
