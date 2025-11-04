@@ -1,0 +1,91 @@
+\subsection{Законы сохранения энергии}
+
+\textbf{Энергия идеального маятника (без трения)}
+
+Для физического маятника без трения полная механическая энергия сохраняется. Она складывается из кинетической энергии вращения и потенциальной энергии в поле тяжести:
+\[
+E = T + U = \dfrac{1}{2}I_O\dot{\varphi}^2 + mgl(1 - \cos\varphi)
+\]
+
+\textbf{Кинетическая энергия:}
+\[
+T = \dfrac{1}{2}I_O\omega^2 = \dfrac{1}{2}I_O\dot{\varphi}^2
+\]
+
+\textbf{Потенциальная энергия:}
+
+Выбираем нулевой уровень потенциальной энергии в положении равновесия, когда центр масс находится на наименьшей высоте. При отклонении на угол $\varphi$ центр масс поднимается на высоту:
+\[
+h = l(1 - \cos\varphi)
+\]
+
+Потенциальная энергия:
+\[
+U = mgh = mgl(1 - \cos\varphi)
+\]
+
+\textbf{Закон сохранения энергии:}
+\[
+E = \dfrac{1}{2}I_O\dot{\varphi}^2 + mgl(1 - \cos\varphi) = \text{const}
+\]
+
+\textbf{Проверка закона сохранения энергии}
+
+Продифференцируем энергию по времени:
+\[
+\dfrac{dE}{dt} = I_O\dot{\varphi}\ddot{\varphi} + mgl\sin\varphi \cdot \dot{\varphi} = \dot{\varphi}(I_O\ddot{\varphi} + mgl\sin\varphi)
+\]
+
+Из уравнения движения $I_O\ddot{\varphi} + mgl\sin\varphi = 0$ следует:
+\[
+\dfrac{dE}{dt} = 0
+\]
+
+Таким образом, полная энергия действительно сохраняется.
+
+\textbf{Начальная энергия}
+
+При начальных условиях $\varphi(0) = \varphi_0$, $\dot{\varphi}(0) = 0$ (маятник отклонили и отпустили без начальной скорости):
+\[
+E_0 = mgl(1 - \cos\varphi_0)
+\]
+
+В точке максимального отклонения вся энергия потенциальная, в точке прохождения равновесия -- полностью кинетическая:
+\[
+E = \dfrac{1}{2}I_O\dot{\varphi}_{\max}^2 = mgl(1 - \cos\varphi_0)
+\]
+
+откуда максимальная угловая скорость:
+\[
+\dot{\varphi}_{\max} = \sqrt{\dfrac{2mgl(1 - \cos\varphi_0)}{I_O}} = \omega_0\sqrt{2(1 - \cos\varphi_0)}
+\]
+
+При малых углах: $1 - \cos\varphi_0 \approx \dfrac{\varphi_0^2}{2}$, и
+\[
+\dot{\varphi}_{\max} \approx \omega_0\varphi_0
+\]
+
+что согласуется с решением линеаризованного уравнения $\varphi(t) = \varphi_0\cos(\omega_0 t)$, где $\dot{\varphi}(t) = -\omega_0\varphi_0\sin(\omega_0 t)$.
+
+\textbf{Энергия маятника с трением}
+
+При наличии трения полная механическая энергия не сохраняется -- она убывает со временем, переходя в тепло:
+\[
+E(t) = \dfrac{1}{2}I_O\dot{\varphi}^2 + mgl(1 - \cos\varphi)
+\]
+
+Скорость потери энергии:
+\[
+\dfrac{dE}{dt} = I_O\dot{\varphi}\ddot{\varphi} + mgl\sin\varphi \cdot \dot{\varphi}
+\]
+
+Подставляя уравнение движения с трением $I_O\ddot{\varphi} = -mgl\sin\varphi - \gamma I_O\dot{\varphi}$:
+\[
+\dfrac{dE}{dt} = \dot{\varphi}(I_O\ddot{\varphi} + mgl\sin\varphi) = \dot{\varphi}(-\gamma I_O\dot{\varphi}) = -\gamma I_O\dot{\varphi}^2 < 0
+\]
+
+Энергия убывает пропорционально квадрату угловой скорости. Это соответствует \textbf{мощности силы трения}:
+\[
+P_{\text{тр}} = M_{\text{тр}} \cdot \omega = -\gamma I_O\dot{\varphi}^2
+\]
+
