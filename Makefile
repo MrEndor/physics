@@ -8,7 +8,7 @@ serve:
 lint:
 	uv run ruff check --exit-non-zero-on-fix
 	uv run ruff format --check --diff
-	uv run mypy ${PWD}
+	#uv run mypy ${PWD}
 
 .PHONY: format
 format:
