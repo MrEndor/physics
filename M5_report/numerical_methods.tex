@@ -1,0 +1,106 @@
+\section{Численные методы решения}
+
+\textbf{Постановка задачи Коши}
+
+Для численного решения преобразуем дифференциальное уравнение второго порядка в систему двух уравнений первого порядка. Введём переменные:
+\[
+\omega = \dot{\varphi}, \quad \varepsilon = \ddot{\varphi}
+\]
+
+\textbf{Система для идеального маятника (без трения):}
+\[
+\begin{cases}
+\dfrac{d\varphi}{dt} = \omega \\[1em]
+\dfrac{d\omega}{dt} = -\omega_0^2 \sin\varphi
+\end{cases}
+\]
+
+где $\omega_0 = \sqrt{\dfrac{mgl}{I_O}}$ -- собственная частота.
+
+\textbf{Система для маятника с трением:}
+\[
+\begin{cases}
+\dfrac{d\varphi}{dt} = \omega \\[1em]
+\dfrac{d\omega}{dt} = -\omega_0^2 \sin\varphi - 2\beta\omega
+\end{cases}
+\]
+
+где $\beta = \dfrac{\gamma}{2}$ -- коэффициент затухания.
+
+\textbf{Начальные условия:}
+\[
+\varphi(0) = \varphi_0, \quad \omega(0) = \omega_0
+\]
+
+Обычно рассматриваем случай $\omega_0 = 0$ (отклонили и отпустили).
+
+\textbf{Метод Рунге-Кутты 4-го порядка}
+
+Для численного интегрирования системы ОДУ используем классический метод Рунге-Кутты 4-го порядка. Это явный одношаговый метод, обеспечивающий точность порядка $O(h^5)$ на одном шаге интегрирования.
+
+\textbf{Общая схема:}
+
+Для системы $\dfrac{d\vec{y}}{dt} = \vec{f}(t, \vec{y})$ с начальными условиями $\vec{y}(t_0) = \vec{y}_0$:
+
+\begin{enumerate}
+    \item Вычисляем четыре коэффициента на каждом шаге:
+    \begin{align*}
+        \vec{k}_1 &= h \cdot \vec{f}(t_n, \vec{y}_n) \\
+        \vec{k}_2 &= h \cdot \vec{f}\left(t_n + \dfrac{h}{2}, \vec{y}_n + \dfrac{\vec{k}_1}{2}\right) \\
+        \vec{k}_3 &= h \cdot \vec{f}\left(t_n + \dfrac{h}{2}, \vec{y}_n + \dfrac{\vec{k}_2}{2}\right) \\
+        \vec{k}_4 &= h \cdot \vec{f}(t_n + h, \vec{y}_n + \vec{k}_3)
+    \end{align*}
+
+    \item Обновляем решение по формуле:
+    \[
+    \vec{y}_{n+1} = \vec{y}_n + \dfrac{1}{6}(\vec{k}_1 + 2\vec{k}_2 + 2\vec{k}_3 + \vec{k}_4)
+    \]
+
+    \item Увеличиваем время: $t_{n+1} = t_n + h$
+\end{enumerate}
+
+\textbf{Применение к системе маятника:}
+
+Обозначим $\vec{y} = \begin{pmatrix} \varphi \\ \omega \end{pmatrix}$, тогда $\vec{f}(t, \vec{y}) = \begin{pmatrix} \omega \\ -\omega_0^2\sin\varphi - 2\beta\omega \end{pmatrix}$.
+
+На каждом шаге интегрирования:
+
+\begin{align*}
+k_{1\varphi} &= h \cdot \omega_n \\
+k_{1\omega} &= h \cdot (-\omega_0^2\sin\varphi_n - 2\beta\omega_n) \\[0.5em]
+k_{2\varphi} &= h \cdot (\omega_n + k_{1\omega}/2) \\
+k_{2\omega} &= h \cdot \left(-\omega_0^2\sin(\varphi_n + k_{1\varphi}/2) - 2\beta(\omega_n + k_{1\omega}/2)\right) \\[0.5em]
+k_{3\varphi} &= h \cdot (\omega_n + k_{2\omega}/2) \\
+k_{3\omega} &= h \cdot \left(-\omega_0^2\sin(\varphi_n + k_{2\varphi}/2) - 2\beta(\omega_n + k_{2\omega}/2)\right) \\[0.5em]
+k_{4\varphi} &= h \cdot (\omega_n + k_{3\omega}) \\
+k_{4\omega} &= h \cdot \left(-\omega_0^2\sin(\varphi_n + k_{3\varphi}) - 2\beta(\omega_n + k_{3\omega})\right)
+\end{align*}
+
+Обновление:
+\[
+\varphi_{n+1} = \varphi_n + \dfrac{1}{6}(k_{1\varphi} + 2k_{2\varphi} + 2k_{3\varphi} + k_{4\varphi})
+\]
+\[
+\omega_{n+1} = \omega_n + \dfrac{1}{6}(k_{1\omega} + 2k_{2\omega} + 2k_{3\omega} + k_{4\omega})
+\]
+
+\textbf{Выбор шага интегрирования}
+
+Для обеспечения точности и устойчивости численного решения необходимо правильно выбрать шаг интегрирования $h$.
+
+\begin{itemize}
+    \item Шаг должен быть значительно меньше периода колебаний: $h \ll T_0$
+    \item Чем больше амплитуда, тем меньше должен быть шаг для учёта нелинейности
+\end{itemize}
+
+\textbf{Определение периода колебаний}
+
+Период колебаний определяем по времени между последовательными прохождениями маятника через положение равновесия в одном направлении:
+\begin{itemize}
+    \item Фиксируем моменты времени $t_i$, когда $\varphi(t_i) = 0$ и $\omega(t_i) < 0$ (движение вниз)
+    \item Период: $T = t_{i+1} - t_i$
+\end{itemize}
+
+Альтернативно, период можно определить как удвоенное время между двумя последовательными точками максимального отклонения ($\omega = 0$).
+
+\newpage
