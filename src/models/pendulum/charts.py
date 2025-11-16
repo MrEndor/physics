@@ -27,9 +27,8 @@ def create_phase_portrait(phi: np.ndarray, omega: np.ndarray) -> alt.Chart:
     return (
         alt.Chart(df)
         .mark_line(
-            strokeWidth=2,
-            color="red",
-            point=alt.OverlayMarkDef(size=20, opacity=0.3),
+            strokeWidth=0,
+            point=alt.OverlayMarkDef(size=20),
         )
         .add_params(alt.selection_interval(bind="scales"))
         .encode(

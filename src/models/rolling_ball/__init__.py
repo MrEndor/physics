@@ -55,7 +55,7 @@ def display_basic_analysis(model, params):
 
     with col2:
         st.header("Скорости")
-        velocity_chart = create_velocity_chart(vx, vy, omega_z, t)
+        velocity_chart = create_velocity_chart(vx, vy, omega_z, t, params)
         st.altair_chart(velocity_chart, use_container_width=True)
 
     st.header("Анализ энергии")

@@ -26,13 +26,13 @@ def create_position_chart(x: float, y: float, t: float) -> alt.Chart:
 
 
 def create_velocity_chart(
-    vx: float, vy: float, omega_z: float, t: float
+    vx: float, vy: float, omega_z: float, t: float, params
 ) -> alt.Chart:
     df = pd.DataFrame({
         "t": t,
         "Скорость X": vx,
         "Скорость Y": vy,
-        "Угловая скорость": omega_z,
+        "Тангенциальная скорость": omega_z * params.radius,
     })
 
     df_melted = df.melt("t", var_name="Тип скорости", value_name="Значение")
@@ -43,7 +43,7 @@ def create_velocity_chart(
         .add_params(alt.selection_interval(bind="scales"))
         .encode(
             x=alt.X("t:Q", title="Время (с)"),
-            y=alt.Y("Значение:Q", title="Скорость"),
+            y=alt.Y("Значение:Q", title="Скорость (м/c)"),
             color=alt.Color("Тип скорости:N"),
             tooltip=["t:Q", "Тип скорости:N", "Значение:Q"],
         )
