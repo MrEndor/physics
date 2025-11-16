@@ -67,7 +67,7 @@ class BallModel:
             acceleration_y = gravity_y + friction_y / params.mass
 
             moment_of_inertia = (2.0 / 5.0) * params.mass * params.radius**2
-            torque_z = friction_x * params.radius
+            torque_z = -friction_x * params.radius
             angular_acceleration = torque_z / moment_of_inertia
 
         return [vx, vy, acceleration_x, acceleration_y, angular_acceleration]
