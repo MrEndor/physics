@@ -101,16 +101,22 @@ class IdealGasSimulation:
         
         r(t + dt) = r(t) + v(t) * dt + 0.5 * a(t) * dt^2
         v(t + dt) = v(t) + 0.5 * (a(t) + a(t + dt)) * dt
+        
+        Гравитация столбца z: a_z = -g (отрицательная!)
         """
         dt = self.config.dt
         g = self.config.g
         
-        # Обновление позиций (векторизированно)
+        # Обновление горизонтальных координат (без акцелерации)
         positions[:, 0] += velocities[:, 0] * dt
         positions[:, 1] += velocities[:, 1] * dt
+        
+        # Обновление вертикальных координат с гравитацией
+        # a_z = -g, поэтому: z = z + v_z*dt - 0.5*g*dt^2
         positions[:, 2] += velocities[:, 2] * dt - 0.5 * g * dt**2
         
-        # Обновление вертикальной компоненты скорости (векторизированно)
+        # Обновление вертикальных скоростей
+        # v_z = v_z + a_z*dt = v_z - g*dt
         velocities[:, 2] -= g * dt
     
     def _handle_collisions(self, positions: np.ndarray, velocities: np.ndarray) -> None:
@@ -268,7 +274,7 @@ class EquilibriumAnalyzer:
         self.config = config
     
     def calculate_temperature(self, velocities: np.ndarray) -> float:
-        """Рассчен температуры из среднего до нижнего центра."""
+        """Рассчет температуры из среднего до нижнего центра."""
         kinetic_energy = 0.5 * self.config.particle_mass * np.sum(velocities**2) / self.config.num_particles
         return 2.0 * kinetic_energy / (3.0 * self.config.k_B)
     
