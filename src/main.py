@@ -1,6 +1,7 @@
 import streamlit
 
 from models.billiard import page as billiard_page
+from models.ideal_gas import page as ideal_gas_page
 from models.pendulum import page as pendulum_page
 from models.rolling_ball import page as rolling_ball_page
 from models.stone_flight import page as stone_flight_page
@@ -17,6 +18,11 @@ def main() -> None:
         ),
         streamlit.Page(
             pendulum_page, title="M5 Физический маятник", url_path="pendulum"
+        ),
+        streamlit.Page(
+            ideal_gas_page,
+            title="M7Б Статистика идеального газа со столкновениями частиц",
+            url_path="ideal_gas",
         ),
     ])
 
