@@ -1,0 +1,128 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage{geometry}
+% задание полей текста
+\geometry{left=10mm,right=10mm,top=20mm,bottom=20mm}
+\usepackage{listings}
+\usepackage{cmap}					% поиск в PDF
+\usepackage[T2A]{fontenc}			% кодировка
+\usepackage[utf8]{inputenc}
+\usepackage[english, russian]{babel}	% локализация и переносы
+\usepackage{natbib}
+
+\usepackage{graphicx}
+\graphicspath{{pix/}}
+\usepackage{pgfplots}
+\usetikzlibrary{arrows}
+\pgfplotsset{width=10cm,compat=1.18}
+\pgfkeys{/pgf/trig format=rad}
+
+
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{enumerate}
+\usepackage[normalem]{ulem}
+\usepackage{titlesec}
+
+% Настройка форматирования section для центрирования без растягивания
+\titleformat{\section}
+  {\normalfont\Large\bfseries\centering}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\centering}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries\centering}{\thesubsubsection}{1em}{}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+    citecolor=blue
+}
+
+
+\setlength\parindent{0pt}
+
+
+\sloppy                     % строго соблюдать границы текста
+\linespread{1.2}            % коэффициент межстрочного интервала
+\setlength{\parskip}{0.5em} % вертик. интервал между абзацами
+
+\setcounter{secnumdepth}{0} % отключение нумерации разделов
+\binoppenalty=1000          % уменьшение переносов в формулах
+
+% объявление новых макрокоманд
+
+\newcommand{\Def}{\textbf{Def.} }
+\newcommand{\Th}{\textbf{Теорема.} }
+\newcommand{\Thbd}{\textbf{Теорема (б/д).} }
+\newcommand{\Theor}[1]{\textbf{Теорема ({#1}).} }
+\newcommand{\Theorbd}[1]{\textbf{Теорема ({#1}) (б/д).} }
+\newcommand{\Consequence}{\textbf{Следствие.} }
+\newcommand{\Remind}{\textbf{Remind.} }
+\newcommand{\Note}{\textbf{Note.} }
+\newcommand{\Statement}{\textbf{Утверждение.} }
+\newcommand{\Prop}{\textbf{Свойство:} }
+\newcommand{\Props}{\textbf{Свойства:} }
+\newcommand{\Proof}{\textbf{Доказательство:} }
+\newcommand{\Prooff}{\textbf{Доказать:} }
+\newcommand{\Solution}{\textbf{Решение:} }
+\newcommand{\Alg}{\textbf{Algorithm.} }
+\newcommand{\Lemma}{\textbf{Лемма.} }
+\newcommand{\Example}{\textbf{Пример:} }
+\newcommand{\Task}{\textbf{Задача.} }
+\newcommand{\Goal}{\textbf{Цель работы:} }
+\newcommand{\Solve}{\textbf{Решение:} }
+\newcommand{\Examples}{\textbf{Примеры.} }
+
+\allowdisplaybreaks[4]
+
+%\renewcommand\thesection{\arabic{section}}
+
+\newcommand{\Endproof}{$\blacksquare$ }
+
+\newcommand{\tr}{\text{tr}}
+\newcommand{\Le}{\leqslant}                % русский стиль нестрогих неравенств
+\newcommand{\Ge}{\geqslant}
+% облегчение математических обозначений
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\Gs}{\mathcal{G}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Norm}{\mathcal{N}}
+%\newcommand{\C}{\mathbb{C}}
+\newcommand{\ind}{\perp \!\!\! \perp}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\E}{{\mathbb{E}}}
+\newcommand{\D} { {\mathbb{D}}}
+\newcommand{\x}{\overline{x}}
+\newcommand{\y}{\overline{y}}
+\newcommand{\soch}[2]{\text{$C_{#1}^{#2}$}}
+\newcommand{\X}{\text{$\mathcal{X}$}}
+\newcommand{\VC}[2]{\text{$VC\left(#1; #2\right)$}}
+\renewcommand{\P}{\text{$\mathcal{P}$}}
+\newcommand{\B}{\text{$\mathcal{B}$}}
+\newcommand{\brackets}[1]{\left({#1}\right)} % автоматический размер скобочек
+\newcommand{\abs}[1]{\left|{#1}\right|} % автоматический размер модуля
+\newcommand{\norm}[1]{\left\|{#1}\right\|} % автоматический размер нормы
+\newcommand{\set}[1]{\left\{{#1}\right\}} % автоматический размер множества
+\newcommand{\condset}[2]{\set{#1 \ | \ #2}} % определение множества
+
+\newcommand{\distrfamily}{\condset{P_\theta}{\theta \in \Theta}}
+
+\DeclareMathOperator{\sign}
+\DeclareMathOperator{\tg}
+
+
+\newpagestyle{main}{
+  \setheadrule{.4pt}
+  \sethead{}{\bullet \; \textit{Цифровизация физических процессов} \; \bullet}{}
+  \setfootrule{.4pt}
+  \setfoot{ВШПИ МФТИ}{М7Б. Статистика идеального газа}{Б13-402}
+}
