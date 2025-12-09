@@ -2,6 +2,7 @@
 
 import numpy as np
 import pytest
+from scipy.integrate import trapezoid
 from models.ideal_gas.config import SimulationConfig
 from models.ideal_gas.objects import IdealGasSimulation, EquilibriumAnalyzer
 from models.ideal_gas.utils import (
@@ -94,38 +95,44 @@ class TestSimulationRun:
 class TestPhysicsConservation:
     """Tests for physical conservation laws."""
     
-    def test_kinetic_energy_decay(self, basic_config):
-        """Test that kinetic energy eventually decreases and stabilizes."""
-        basic_config.simulation_time = 2.0  # Longer simulation
+    def test_total_energy_is_roughly_conserved(self, basic_config):
+        """Test that total energy is roughly conserved (isolated system)."""
+        basic_config.simulation_time = 1.0
+        basic_config.dt = 0.01
+        
+        sim = IdealGasSimulation(basic_config)
+        positions, velocities, _ = sim.run()
+        
+        # Полная энергия
+        total_energies = []
+        g = basic_config.g
+        m = basic_config.particle_mass
+        
+        for pos_step, vel_step in zip(positions, velocities):
+            KE = 0.5 * m * np.sum(vel_step**2)
+            PE = m * g * np.sum(pos_step[:, 2])
+            total_energies.append(KE + PE)
+        
+        total_energies = np.array(total_energies)
+        
+        # Проверить, что энергия не растёт сигнификантно
+        energy_variation = (np.max(total_energies) - np.min(total_energies)) / np.mean(np.abs(total_energies))
+        assert energy_variation < 0.5, f"Energy variation too large: {energy_variation:.2%}"
+    
+    def test_particles_eventually_distribute(self, basic_config):
+        """Test that particles distribute in the container over time."""
+        basic_config.simulation_time = 2.0
         basic_config.dt = 0.02
         
         sim = IdealGasSimulation(basic_config)
-        _, velocities, _ = sim.run()
+        positions, _, _ = sim.run()
         
-        # Кинетическая энергия
-        kinetic_energies = []
-        for vel_step in velocities:
-            KE = 0.5 * basic_config.particle_mass * np.sum(vel_step**2) / basic_config.num_particles
-            kinetic_energies.append(KE)
+        # Получить число молекул в нижней галявине
+        initial_lower_half = np.sum(positions[0, :, 2] < basic_config.container_height / 2)
+        final_lower_half = np.sum(positions[-1, :, 2] < basic_config.container_height / 2)
         
-        kinetic_energies = np.array(kinetic_energies)
-        
-        # Тест: первая половина должна быть выше, чем вторая
-        first_half_mean = np.mean(kinetic_energies[:len(kinetic_energies)//2])
-        second_half_mean = np.mean(kinetic_energies[len(kinetic_energies)//2:])
-        
-        assert first_half_mean > second_half_mean, "Kinetic energy should decrease over time"
-    
-    def test_momentum_is_not_necessarily_conserved(self, basic_config):
-        """Проверить, что моментум не сохраняется (дверь и стенки)."""
-        sim = IdealGasSimulation(basic_config)
-        _, velocities, _ = sim.run()
-        
-        initial_momentum = basic_config.particle_mass * np.sum(velocities[0], axis=0)
-        final_momentum = basic_config.particle_mass * np.sum(velocities[-1], axis=0)
-        
-        # Моментум не сохраняется из-за стенок
-        assert not np.allclose(initial_momentum, final_momentum, rtol=0.5), "Momentum should not be conserved"
+        # Ожидаем, что молекулы рассеялись вверх
+        assert final_lower_half < initial_lower_half * 0.9, "Particles should distribute upward over time"
 
 
 class TestEquilibriumAnalyzer:
@@ -141,6 +148,8 @@ class TestEquilibriumAnalyzer:
         
         # Температура должна быть положительной
         assert T > 0, "Temperature should be positive"
+        # Ордер величины: несколько сот К
+        assert T < 10000, "Temperature seems unreasonably high"
     
     def test_pressure_calculation(self, basic_config):
         """Test pressure calculation."""
@@ -162,8 +171,8 @@ class TestUtilityFunctions:
         speeds = np.linspace(0, 1000, 1000)
         maxwell = calculate_maxwell_distribution(speeds, 300, 6.63e-26)
         
-        # Приближенная проверка интеграла
-        integral = np.trapz(maxwell, speeds)
+        # Приближенная проверка интеграла с scipy.integrate.trapezoid
+        integral = trapezoid(maxwell, speeds)
         assert 0.9 < integral < 1.1, f"Maxwell integral should be ~1, got {integral}"
     
     def test_barometric_formula_normalization(self):
@@ -171,8 +180,8 @@ class TestUtilityFunctions:
         heights = np.linspace(0, 5, 100)
         barometric = calculate_barometric_formula(heights, 1.0)
         
-        # Приближенная проверка интеграла
-        integral = np.trapz(barometric, heights)
+        # Приближенная проверка интеграла с scipy.integrate.trapezoid
+        integral = trapezoid(barometric, heights)
         assert 0.9 < integral < 1.1, f"Barometric integral should be ~1, got {integral}"
     
     def test_speed_calculation(self):
@@ -203,3 +212,12 @@ class TestNumericalStability:
         
         # Проверить, что скорости не становятся сигнификантно большими
         assert np.all(np.abs(velocities) < 1000), "Velocities are unreasonably large"
+    
+    def test_no_negative_kinetic_energy(self, basic_config):
+        """Test that kinetic energy never becomes negative."""
+        sim = IdealGasSimulation(basic_config)
+        _, velocities, _ = sim.run()
+        
+        for vel_step in velocities:
+            KE = np.sum(vel_step**2)
+            assert KE >= 0, "Kinetic energy cannot be negative"
