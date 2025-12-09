@@ -92,47 +92,105 @@ class TestSimulationRun:
         assert times[-1] <= basic_config.simulation_time, "Final time should not exceed simulation_time"
 
 
-class TestPhysicsConservation:
-    """Tests for physical conservation laws."""
+class TestEnergyConservation:
+    """Tests for energy conservation laws."""
     
-    def test_total_energy_is_roughly_conserved(self, basic_config):
-        """Test that total energy is roughly conserved (isolated system)."""
-        basic_config.simulation_time = 1.0
-        basic_config.dt = 0.01
-        
+    def test_total_energy_conserved(self, basic_config):
+        """Проверить основной закон сохранения энергии для изолированной системы."""
         sim = IdealGasSimulation(basic_config)
         positions, velocities, _ = sim.run()
         
-        # Полная энергия
+        # Полная энергия всегда
         total_energies = []
         g = basic_config.g
         m = basic_config.particle_mass
         
+        for pos_step, vel_step in zip(positions, velocities):
+            # Кинетическая энергия
+            KE = 0.5 * m * np.sum(vel_step**2)
+            # Потенциальная энергия
+            PE = m * g * np.sum(pos_step[:, 2])
+            # Полная энергия
+            total_energies.append(KE + PE)
+        
+        total_energies = np.array(total_energies)
+        
+        # Инициальная энергия
+        initial_energy = total_energies[0]
+        
+        # Проверить, что энергия почти константна
+        # Рассеия до ±5% допустима (численные ошибки)
+        rel_energy_error = np.max(np.abs(total_energies - initial_energy)) / np.abs(initial_energy)
+        assert rel_energy_error < 0.05, f"Energy conservation error too large: {rel_energy_error:.2%}"
+    
+    def test_kinetic_energy_decreases_initially(self, basic_config):
+        """Проверить, что кинетическая энергия снижается до явно
+        (молекулы поднимаются и теряют скорость)."""
+        sim = IdealGasSimulation(basic_config)
+        _, velocities, _ = sim.run()
+        
+        # Кинетическая энергия на каждом шаге
+        m = basic_config.particle_mass
+        kinetic_energies = []
+        for vel_step in velocities:
+            KE = 0.5 * m * np.sum(vel_step**2)
+            kinetic_energies.append(KE)
+        
+        kinetic_energies = np.array(kinetic_energies)
+        
+        # У частицы есть инициальная скорость, поэтому кинетическая энергия должна упасть
+        assert kinetic_energies[0] > kinetic_energies[-1], "KE should decrease (particles rise against gravity)"
+    
+    def test_potential_energy_increases(self, basic_config):
+        """Проверить, что потенциальная энергия растёт."""
+        sim = IdealGasSimulation(basic_config)
+        positions, _, _ = sim.run()
+        
+        g = basic_config.g
+        m = basic_config.particle_mass
+        
+        potential_energies = []
+        for pos_step in positions:
+            PE = m * g * np.sum(pos_step[:, 2])
+            potential_energies.append(PE)
+        
+        potential_energies = np.array(potential_energies)
+        
+        # Потенциальная энергия должна расти (молекулы поднимаются)
+        assert potential_energies[-1] > potential_energies[0], "PE should increase (particles rise)"
+    
+    def test_mechanical_energy_conservation_no_collisions(self):
+        """Проверить сохранение механической энергии без столкновений.
+        
+        Ниские отправергнутые партикулы должны дохранять энергию без высоких численных ошибок.
+        """
+        config = SimulationConfig(
+            num_particles=10,  # Мало молекул - минимизируем столкновения
+            container_height=5.0,  # большой контейнер - меньше коллизий
+            container_radius=2.0,
+            initial_velocity=5.0,  # нижняя скорость
+            simulation_time=0.5,
+            dt=0.01,
+        )
+        
+        sim = IdealGasSimulation(config)
+        positions, velocities, _ = sim.run()
+        
+        g = config.g
+        m = config.particle_mass
+        
+        total_energies = []
         for pos_step, vel_step in zip(positions, velocities):
             KE = 0.5 * m * np.sum(vel_step**2)
             PE = m * g * np.sum(pos_step[:, 2])
             total_energies.append(KE + PE)
         
         total_energies = np.array(total_energies)
+        initial_energy = total_energies[0]
         
-        # Проверить, что энергия не растёт сигнификантно
-        energy_variation = (np.max(total_energies) - np.min(total_energies)) / np.mean(np.abs(total_energies))
-        assert energy_variation < 0.5, f"Energy variation too large: {energy_variation:.2%}"
-    
-    def test_particles_eventually_distribute(self, basic_config):
-        """Test that particles distribute in the container over time."""
-        basic_config.simulation_time = 2.0
-        basic_config.dt = 0.02
-        
-        sim = IdealGasSimulation(basic_config)
-        positions, _, _ = sim.run()
-        
-        # Получить число молекул в нижней галявине
-        initial_lower_half = np.sum(positions[0, :, 2] < basic_config.container_height / 2)
-        final_lower_half = np.sum(positions[-1, :, 2] < basic_config.container_height / 2)
-        
-        # Ожидаем, что молекулы рассеялись вверх
-        assert final_lower_half < initial_lower_half * 0.9, "Particles should distribute upward over time"
+        # До ±2% (очень точная неоновмыеся система)
+        rel_energy_error = np.max(np.abs(total_energies - initial_energy)) / np.abs(initial_energy)
+        assert rel_energy_error < 0.02, f"Energy drift too large: {rel_energy_error:.2%}"
 
 
 class TestEquilibriumAnalyzer:
@@ -221,3 +279,35 @@ class TestNumericalStability:
         for vel_step in velocities:
             KE = np.sum(vel_step**2)
             assert KE >= 0, "Kinetic energy cannot be negative"
+    
+    def test_gravity_pulls_downward(self, basic_config):
+        """Проверить, что гравитация действует вниз (знак "-" в a_z = -g).
+        
+        Это основная проверка: если дать частице вертикальную скорость,
+        гравитация должна её уменьшать.
+        """
+        config = SimulationConfig(
+            num_particles=1,  # Одна частица
+            container_height=10.0,
+            container_radius=5.0,
+            initial_velocity=20.0,  # Только вверх
+            initial_height=0.0,  # На дне
+            simulation_time=1.0,
+            dt=0.01,
+        )
+        
+        sim = IdealGasSimulation(config)
+        positions, velocities, _ = sim.run()
+        
+        # Частица стартует с v_z > 0 (верх)
+        initial_v_z = velocities[0, 0, 2]
+        assert initial_v_z > 0, "Particle should start with upward velocity"
+        
+        # После симуляции v_z должен быть меньше (гравитация таможит)
+        final_v_z = velocities[-1, 0, 2]
+        assert final_v_z < initial_v_z, "Gravity should reduce upward velocity"
+        
+        # Высота вначале арыов (дно), а вконце выше (частица поднялась)
+        initial_z = positions[0, 0, 2]
+        max_z = np.max(positions[:, 0, 2])
+        assert max_z > initial_z, "Particle should rise due to initial upward velocity"
