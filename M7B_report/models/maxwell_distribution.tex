@@ -1,0 +1,194 @@
+\subsection{Распределение Максвелла по скоростям}
+
+В состоянии термодинамического равновесия распределение молекул по скоростям описывается \textbf{распределением Максвелла}.
+
+\textbf{Распределение по вектору скорости}
+
+Плотность вероятности обнаружить молекулу со скоростью в интервале $(\vec{v}, \vec{v} + d\vec{v})$:
+\[
+f(\vec{v}) = \left(\dfrac{m}{2\pi k_B T}\right)^{3/2} \exp\left(-\dfrac{m(\vec{v})^2}{2k_B T}\right)
+\]
+
+где:
+\begin{itemize}
+    \item $m$ -- масса молекулы
+    \item $k_B = 1.38 \times 10^{-23}$ Дж/К -- постоянная Больцмана
+    \item $T$ -- абсолютная температура
+\end{itemize}
+
+Распределение факторизуется по компонентам:
+\[
+f(\vec{v}) = f(v_x)f(v_y)f(v_z)
+\]
+
+где каждая компонента имеет нормальное распределение:
+\[
+f(v_i) = \sqrt{\dfrac{m}{2\pi k_B T}} \exp\left(-\dfrac{mv_i^2}{2k_B T}\right), \quad i = x, y, z
+\]
+
+\textbf{Распределение по модулю скорости}
+
+Интегрируя по всем направлениям, получаем распределение по модулю скорости $v = |\vec{v}|$:
+\[
+\boxed{f(v) = 4\pi v^2 \left(\dfrac{m}{2\pi k_B T}\right)^{3/2} \exp\left(-\dfrac{mv^2}{2k_B T}\right)}
+\]
+
+Это распределение называется \textbf{распределением Максвелла}.
+
+\textbf{Характерные скорости}
+
+\begin{enumerate}
+    \item \textbf{Наиболее вероятная скорость} (максимум распределения):
+
+    Найдём максимум $f(v)$, приравняв производную к нулю:
+    \[
+    \dfrac{df}{dv} = 4\pi \left(\dfrac{m}{2\pi k_B T}\right)^{3/2} \dfrac{d}{dv}\left[v^2 e^{-mv^2/(2k_B T)}\right] = 0
+    \]
+
+    Применяя правило произведения:
+    \[
+    2v e^{-mv^2/(2k_B T)} + v^2 e^{-mv^2/(2k_B T)} \cdot \left(-\dfrac{mv}{k_B T}\right) = 0
+    \]
+
+    Вынося общий множитель $v e^{-mv^2/(2k_B T)}$:
+    \[
+    v e^{-mv^2/(2k_B T)} \left(2 - \dfrac{mv^2}{k_B T}\right) = 0
+    \]
+
+    Нетривиальное решение ($v \neq 0$):
+    \[
+    2 - \dfrac{mv^2}{k_B T} = 0 \quad \Rightarrow \quad v_{prob} = \sqrt{\dfrac{2k_B T}{m}}
+    \]
+
+    \item \textbf{Средняя скорость:}
+    \[
+    \langle v \rangle = \int_0^\infty v f(v) dv = 4\pi \left(\dfrac{m}{2\pi k_B T}\right)^{3/2} \int_0^\infty v^3 e^{-mv^2/(2k_B T)} dv
+    \]
+
+    Замена переменной: $u = \dfrac{mv^2}{2k_B T}$, откуда $v = \sqrt{\dfrac{2k_B T u}{m}}$, $dv = \sqrt{\dfrac{k_B T}{2mu}} du$
+    \[
+    \int_0^\infty v^3 e^{-mv^2/(2k_B T)} dv = \left(\dfrac{2k_B T}{m}\right)^2 \int_0^\infty u e^{-u} du = \left(\dfrac{2k_B T}{m}\right)^2 \cdot 1! = \left(\dfrac{2k_B T}{m}\right)^2
+    \]
+
+    Подставляя обратно:
+    \[
+    \langle v \rangle = 4\pi \left(\dfrac{m}{2\pi k_B T}\right)^{3/2} \left(\dfrac{2k_B T}{m}\right)^2 = \sqrt{\dfrac{8k_B T}{\pi m}}
+    \]
+
+    \item \textbf{Среднеквадратичная скорость:}
+    \[
+    \langle v^2 \rangle = \int_0^\infty v^2 f(v) dv = 4\pi \left(\dfrac{m}{2\pi k_B T}\right)^{3/2} \int_0^\infty v^4 e^{-mv^2/(2k_B T)} dv
+    \]
+
+    Аналогично, используя табличный интеграл:
+    \[
+    \int_0^\infty v^4 e^{-mv^2/(2k_B T)} dv = \dfrac{3}{4}\sqrt{\pi} \left(\dfrac{2k_B T}{m}\right)^{5/2}
+    \]
+
+    Откуда:
+    \[
+    \langle v^2 \rangle = \dfrac{3k_B T}{m} \quad \Rightarrow \quad v_{rms} = \sqrt{\langle v^2 \rangle} = \sqrt{\dfrac{3k_B T}{m}}
+    \]
+\end{enumerate}Соотношение между ними:
+\[
+v_{prob} : \langle v \rangle : v_{rms} = \sqrt{2} : \sqrt{\dfrac{8}{\pi}} : \sqrt{3} \approx 1.41 : 1.60 : 1.73
+\]
+
+\textbf{График распределения Максвелла}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=0.8\textwidth,
+    height=6cm,
+    xlabel={Скорость $v/v_{prob}$},
+    ylabel={$f(v)$ (отн. ед.)},
+    grid=major,
+    legend pos=north east,
+    domain=0:3,
+    samples=200,
+    ymin=0,
+]
+% Безразмерное распределение Максвелла: f(x) = 4/sqrt(pi) * x^2 * exp(-x^2)
+% где x = v/v_prob, v_prob = sqrt(2kT/m)
+\addplot[blue, thick] {4/sqrt(pi)*x^2*exp(-x^2)};
+\addlegendentry{Распределение Максвелла}
+
+% Отметим характерные скорости
+\draw[dashed, gray] (axis cs:1,0) -- (axis cs:1,1.2);
+\node[anchor=south, gray] at (axis cs:1,1.2) {$v_{prob}$};
+
+\draw[dashed, red] (axis cs:1.128,0) -- (axis cs:1.128,0.8);
+\node[anchor=south, red] at (axis cs:1.128,0.8) {$\langle v \rangle$};
+
+\draw[dashed, green!60!black] (axis cs:1.225,0) -- (axis cs:1.225,0.6);
+\node[anchor=south, green!60!black] at (axis cs:1.225,0.6) {$v_{rms}$};
+\end{axis}
+\end{tikzpicture}
+\caption{Распределение Максвелла в безразмерных единицах ($v/v_{prob}$). Показаны характерные скорости: наиболее вероятная $v_{prob}$, средняя $\langle v \rangle \approx 1.128 v_{prob}$ и среднеквадратичная $v_{rms} \approx 1.225 v_{prob}$}
+\end{figure}
+
+Из графика видно:
+\begin{itemize}
+    \item Максимум распределения при $v = v_{prob} = \sqrt{2k_BT/m}$
+    \item Средняя скорость $\langle v \rangle$ и среднеквадратичная $v_{rms}$ больше наиболее вероятной
+    \item Распределение асимметрично -- имеет "хвост" в сторону больших скоростей
+\end{itemize}
+
+\textbf{Средняя кинетическая энергия}
+
+\Solution Вычислим среднее значение кинетической энергии:
+\[
+\left\langle \dfrac{mv^2}{2} \right\rangle = \dfrac{m}{2} \langle v^2 \rangle = \dfrac{m}{2} \cdot \dfrac{3k_B T}{m} = \dfrac{3}{2}k_B T
+\]
+
+Альтернативный вывод через интегрирование по компонентам:
+\[
+\left\langle \dfrac{mv^2}{2} \right\rangle = \left\langle \dfrac{m(v_x^2 + v_y^2 + v_z^2)}{2} \right\rangle = \dfrac{m}{2}(\langle v_x^2 \rangle + \langle v_y^2 \rangle + \langle v_z^2 \rangle)
+\]
+
+Для каждой компоненты (например, $v_x$):
+\[
+\langle v_x^2 \rangle = \int_{-\infty}^{\infty} v_x^2 \sqrt{\dfrac{m}{2\pi k_B T}} e^{-mv_x^2/(2k_B T)} dv_x = \dfrac{k_B T}{m}
+\]
+
+Используем табличный интеграл $\int_{-\infty}^{\infty} x^2 e^{-ax^2} dx = \dfrac{1}{2}\sqrt{\dfrac{\pi}{a^3}}$.
+
+Таким образом:
+\[
+\left\langle \dfrac{mv^2}{2} \right\rangle = \dfrac{m}{2} \cdot 3 \cdot \dfrac{k_B T}{m} = \dfrac{3}{2}k_B T
+\]
+
+Это выражение связывает температуру со средней кинетической энергией поступательного движения молекул.
+
+По теореме о равнораспределении энергии по степеням свободы:
+\[
+\left\langle \dfrac{mv_i^2}{2} \right\rangle = \dfrac{1}{2}k_B T, \quad i = x, y, z
+\]
+
+На каждую поступательную степень свободы приходится энергия $\dfrac{1}{2}k_B T$.
+
+\textbf{Проверка нормировки}
+
+\Solution Проверим, что распределение нормировано:
+\[
+\int_0^\infty f(v) dv = 4\pi \left(\dfrac{m}{2\pi k_B T}\right)^{3/2} \int_0^\infty v^2 e^{-mv^2/(2k_B T)} dv
+\]
+
+Используем табличный интеграл (гауссов интеграл):
+\[
+\int_0^\infty v^2 e^{-av^2} dv = \dfrac{1}{4}\sqrt{\dfrac{\pi}{a^3}}
+\]
+
+Где $a = \dfrac{m}{2k_B T}$:
+\[
+\int_0^\infty v^2 e^{-mv^2/(2k_B T)} dv = \dfrac{1}{4}\sqrt{\dfrac{\pi}{(m/(2k_B T))^3}} = \dfrac{1}{4}\sqrt{\pi} \left(\dfrac{2k_B T}{m}\right)^{3/2}
+\]
+
+Подставляем:
+\[
+\int_0^\infty f(v) dv = 4\pi \left(\dfrac{m}{2\pi k_B T}\right)^{3/2} \cdot \dfrac{1}{4}\sqrt{\pi} \left(\dfrac{2k_B T}{m}\right)^{3/2} = \sqrt{\pi} \cdot \dfrac{1}{\sqrt{\pi}} = 1
+\]
+
+Это означает, что вероятность найти молекулу с любой скоростью равна единице.
